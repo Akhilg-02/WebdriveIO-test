@@ -29,8 +29,9 @@ lerna-debug.log*
 .eslintcache
 
 # Test Reports
-# allure-results/
+allure-results/
 # report/
 report
 
 .vscode/settings.json
+
