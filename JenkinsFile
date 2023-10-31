@@ -1,0 +1,14 @@
+pipeline {
+    agent any
+    stages {
+        stage('Install Dependencies') {
+            steps {
+            }
+        }
+        stage('Run WDIO Tests') {
+            steps {
+                bat 'npm run wdio'
+            }
+        }
+    }
+}
