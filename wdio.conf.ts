@@ -71,6 +71,8 @@ export const config: Options.Testrunner = {
         // 'goog:chromeOptions': {
         //     args: ['--headless']
         // }
+        'goog:chromeOptions': { 
+        binary: 'C:\\Users\\AGPX\\AppData\\Local\\Google\\Chrome\\Application\\chrome.exe'}
     }],
 
     //
