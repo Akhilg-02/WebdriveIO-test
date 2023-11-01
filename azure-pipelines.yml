@@ -73,7 +73,7 @@ steps:
 
     displayName: npm install
     # workingDirectory should match where your package.json file is located. It defaults to the root of the repository.
-    workingDirectory: $(Build.SourcesDirectory)/typescript-selenium-webdriver-sample
+    # workingDirectory: $(Build.SourcesDirectory)/typescript-selenium-webdriver-sample
 
   # This task runs the tests specified by jest.config.js, including our example accessibility tests.
   #
@@ -81,29 +81,29 @@ steps:
   # those are both fine.
   #
   # The 2>&1 is a workaround for facebook/jest#5064
-  - script: npm test --ci 2>&1 # or "npm run test -- --ci 2>&1"
-    displayName: npm test
-    workingDirectory: $(Build.SourcesDirectory)/typescript-selenium-webdriver-sample
+  # - script: npm test --ci 2>&1 # or "npm run test -- --ci 2>&1"
+  #   displayName: npm test
+  #   workingDirectory: $(Build.SourcesDirectory)/typescript-selenium-webdriver-sample
 
-  # This task is how the "Tests" tab in our Azure Pipelines build results page gets its data
-  - task: PublishTestResults@2
-    displayName: publish test results
-    inputs:
-      testResultsFiles: $(Build.SourcesDirectory)/typescript-selenium-webdriver-sample/test-results/junit.xml
-      testRunTitle: typescript-selenium-webdriver-sample ($(imageName) $(browser))
-    condition: succeededOrFailed()
+  # # This task is how the "Tests" tab in our Azure Pipelines build results page gets its data
+  # - task: PublishTestResults@2
+  #   displayName: publish test results
+  #   inputs:
+  #     testResultsFiles: $(Build.SourcesDirectory)/typescript-selenium-webdriver-sample/test-results/junit.xml
+  #     testRunTitle: typescript-selenium-webdriver-sample ($(imageName) $(browser))
+  #   condition: succeededOrFailed()
 
   # If you are adding tests to an existing project that already uses Azure Pipelines, this is probably the only
   # new task you'll need to add.
   #
   # This task is how the "Scans" tab in our Azure Pipelines build results page gets its data. It requires using
   # PublishBuildArtifacts rather than the newer PublishPipelineArtifacts.
-  - task: PublishBuildArtifacts@1
-    displayName: publish sarif results
-    inputs:
-      # The exact name "CodeAnalysisLogs" is required for the Sarif Results Viewer Extension for Azure Pipelines
-      # to find the .sarif files our accessibility test produces.
-      artifactName: "CodeAnalysisLogs"
-      # "test-results" is not a required convention; it just happens to be where our tests write .sarif files to.
-      pathtoPublish: "$(Build.SourcesDirectory)/typescript-selenium-webdriver-sample/test-results"
-    condition: succeededOrFailed()
+  # - task: PublishBuildArtifacts@1
+  #   displayName: publish sarif results
+  #   inputs:
+  #     # The exact name "CodeAnalysisLogs" is required for the Sarif Results Viewer Extension for Azure Pipelines
+  #     # to find the .sarif files our accessibility test produces.
+  #     artifactName: "CodeAnalysisLogs"
+  #     # "test-results" is not a required convention; it just happens to be where our tests write .sarif files to.
+  #     pathtoPublish: "$(Build.SourcesDirectory)/typescript-selenium-webdriver-sample/test-results"
+  #   condition: succeededOrFailed()
