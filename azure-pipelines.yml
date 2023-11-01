@@ -17,5 +17,6 @@ steps:
 
 - script: |
     npm install
+    npm install chromedriver
     npm run wdio
   displayName: 'npm install and build'
