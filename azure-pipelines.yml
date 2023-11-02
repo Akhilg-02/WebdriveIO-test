@@ -48,3 +48,17 @@ steps:
         taskkill /IM chrome.exe /F
       )
     displayName: 'Close Chrome'
+
+  - task: UseJavaVersion@0
+    displayName: 'Set up Java'
+    inputs:
+      version: '8'
+
+  - script: |
+      # Download and install Katalon Studio
+      Invoke-WebRequest -Uri 'https://download.katalon.io/8.2.3/Katalon_Studio_Windows_64-8.2.3.zip' -OutFile 'Katalon_Studio.zip'
+      Expand-Archive -Path 'Katalon_Studio.zip' -DestinationPath 'C:\Katalon'
+    displayName: 'Install Katalon Studio'
+
+  - script: 'C:\Katalon\katalon.exe -runMode=console -projectPath="C:\path\to\your\Katalon\project" -testSuitePath="Test Suites/YourTestSuite" -apiKey=YOUR_API_KEY'
+    displayName: 'Run Katalon Studio Test Suite'
