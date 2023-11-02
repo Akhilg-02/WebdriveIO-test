@@ -68,11 +68,15 @@ steps:
   #
   # Our sample uses npm for this, but if your project uses NPM instead, that's also fine.
   - script: 
-      npm install 
+      npm install
+    displayName: 'Installing node-modules' 
 
   - script:
       npm install chromedriver 
+  
+  - script:
       npm run wdio
+    displayName: 'Ruuning the test cases'
   
 
     # displayName: npm install
