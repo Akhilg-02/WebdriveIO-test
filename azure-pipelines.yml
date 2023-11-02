@@ -43,7 +43,7 @@ strategy:
       browser: chrome
 
     linux-firefox:
-      imageName: ubuntu-22.04
+      imageName: windows-2022
       browser: firefox
 
 pool:
