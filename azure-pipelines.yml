@@ -20,13 +20,13 @@ steps:
       addToPath: true
       architecture: 'x64'
 
-  - script: |
-      if [ "$(SELENIUM_BROWSER)" == "chrome" ]; then
+  - powershell: |
+      if ($env:SELENIUM_BROWSER -eq "chrome") {
         # Download AutoIt
-        wget https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe -O AutoIt-Setup.exe
+        Invoke-WebRequest -Uri 'https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe' -OutFile 'AutoIt-Setup.exe'
         # Install AutoIt silently
-        AutoIt-Setup.exe /S
-      fi
+        Start-Process -Wait -FilePath '.\AutoIt-Setup.exe' -ArgumentList '/S'
+      }
     displayName: 'Install AutoIt'
 
   - script: |
