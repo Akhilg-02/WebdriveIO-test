@@ -1,59 +1,42 @@
 trigger:
 - main
 
-strategy:
-  matrix:
-    win-chrome:
-      imageName: windows-2022
-      browser: chrome
+pr: 
+- '*'
 
-pool:
-  vmImage: $(imageName)
-
-variables:
-  SELENIUM_BROWSER: $(browser)
-
-steps:
+jobs:
+- job: RunWebioTests
+  pool:
+    vmImage: 'windows-latest'  # Use a Windows image
+  steps:
   - task: UseNode@1
     displayName: 'Install Node.js'
     inputs:
-      version: 18.x
-  
+      version: 18.x  # You can adjust the Node.js version as needed
+
   - powershell: |
-      if ($env:SELENIUM_BROWSER -eq "chrome") {
-        # Download AutoIt
+      if ($(SeleniumBrowser) -eq "chrome") {
+        # Download and install AutoIt (for handling browser dialogs)
         Invoke-WebRequest -Uri 'https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe' -OutFile 'AutoIt-Setup.exe'
-        # Install AutoIt silently
         Start-Process -Wait -FilePath '.\AutoIt-Setup.exe' -ArgumentList '/S'
       }
     displayName: 'Install AutoIt'
 
-  - script: |
-      if "%SELENIUM_BROWSER%"=="chrome" (
-        start chrome
-      )
+  - powershell: Start-Process chrome.exe -Wait  # Start Chrome browser
     displayName: 'Start Chrome'
 
-  - script: npm install
-    displayName: 'Installing node-modules'
+  - script: npm install  # Install your project dependencies
+    displayName: 'Install Node Modules'
 
-  - script: npm install chromedriver
+  - script: npm install chromedriver  # Install ChromeDriver
     displayName: 'Install ChromeDriver'
 
-  - script: npm run wdio
-    displayName: 'Running the test cases'
+  - script: npm run wdio  # Run your WebDriverIO tests
+    displayName: 'Running WebDriverIO tests'
 
-  - script: |
-      if "%SELENIUM_BROWSER%"=="chrome" (
-        taskkill /IM chrome.exe /F
-      )
+  - powershell: |
+      if ($(SeleniumBrowser) -eq "chrome") {
+        # Close Chrome browser after tests
+        Stop-Process -Name chrome -Force
+      }
     displayName: 'Close Chrome'
-
-  - script: |
-      # Download and install Katalon Studio
-      Invoke-WebRequest -Uri 'https://download.katalon.io/8.2.3/Katalon_Studio_Windows_64-8.2.3.zip' -OutFile 'Katalon_Studio.zip'
-      Expand-Archive -Path 'Katalon_Studio.zip' -DestinationPath 'C:\Katalon'
-    displayName: 'Install Katalon Studio'
-
-  - script: 'C:\Katalon\katalon.exe -runMode=console -projectPath="C:\path\to\your\Katalon\project" -testSuitePath="Test Suites/YourTestSuite" -apiKey=YOUR_API_KEY'
-    displayName: 'Run Katalon Studio Test Suite'
