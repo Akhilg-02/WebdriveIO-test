@@ -70,7 +70,8 @@ steps:
   - script: 
       npm install 
 
-  - script: 
+  - script:
+      npm install chromedriver 
       npm run wdio
   
 
