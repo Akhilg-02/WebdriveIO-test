@@ -18,7 +18,7 @@ steps:
     displayName: 'Install Node.js'
     inputs:
       version: 18.x
-
+  
   - powershell: |
       if ($env:SELENIUM_BROWSER -eq "chrome") {
         # Download AutoIt
@@ -48,11 +48,6 @@ steps:
         taskkill /IM chrome.exe /F
       )
     displayName: 'Close Chrome'
-
-  - task: UseJavaVersion@0
-    displayName: 'Set up Java'
-    inputs:
-      version: '8'
 
   - script: |
       # Download and install Katalon Studio
