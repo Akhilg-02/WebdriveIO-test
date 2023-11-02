@@ -1,13 +1,20 @@
 trigger:
 - main
 
-pr: 
-- '*'
 
 jobs:
 - job: RunWebioTests
+
+  strategy:
+   matrix:
+    win-chrome:
+      imageName: windows-2022
+      browser: chrome
+
   pool:
     vmImage: 'windows-latest'  # Use a Windows image
+    
+    SELENIUM_BROWSER: $(browser)
   steps:
   - task: UseNode@1
     displayName: 'Install Node.js'
@@ -15,7 +22,7 @@ jobs:
       version: 18.x  # You can adjust the Node.js version as needed
 
   - powershell: |
-      if ($(SeleniumBrowser) -eq "chrome") {
+      if ($env:SELENIUM_BROWSER -eq "chrome") {
         # Download and install AutoIt (for handling browser dialogs)
         Invoke-WebRequest -Uri 'https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe' -OutFile 'AutoIt-Setup.exe'
         Start-Process -Wait -FilePath '.\AutoIt-Setup.exe' -ArgumentList '/S'
