@@ -69,7 +69,10 @@ steps:
   # Our sample uses npm for this, but if your project uses NPM instead, that's also fine.
   - script: 
       npm install 
+
+  - script: 
       npm run wdio
+  
 
     # displayName: npm install
     # workingDirectory should match where your package.json file is located. It defaults to the root of the repository.
