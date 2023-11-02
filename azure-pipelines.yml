@@ -14,11 +14,10 @@ variables:
   SELENIUM_BROWSER: $(browser)
 
 steps:
-  - task: UsePythonVersion@0
+  - task: UseNode@1
+    displayName: 'Install Node.js'
     inputs:
-      versionSpec: '3.x'
-      addToPath: true
-      architecture: 'x64'
+      version: 18.x
 
   - powershell: |
       if ($env:SELENIUM_BROWSER -eq "chrome") {
@@ -30,10 +29,9 @@ steps:
     displayName: 'Install AutoIt'
 
   - script: |
-      if [ "$(SELENIUM_BROWSER)" == "chrome" ]; then
-        # Start Chrome in visible mode
+      if "%SELENIUM_BROWSER%"=="chrome" (
         start chrome
-      fi
+      )
     displayName: 'Start Chrome'
 
   - script: npm install
@@ -46,8 +44,7 @@ steps:
     displayName: 'Running the test cases'
 
   - script: |
-      if [ "$(SELENIUM_BROWSER)" == "chrome" ]; then
-        # Close Chrome
+      if "%SELENIUM_BROWSER%"=="chrome" (
         taskkill /IM chrome.exe /F
-      fi
+      )
     displayName: 'Close Chrome'
