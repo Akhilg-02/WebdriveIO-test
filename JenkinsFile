@@ -3,13 +3,25 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-			    bat 'npm install'
+                bat 'npm install'
             }
         }
         stage('Run WDIO Tests') {
             steps {
                 bat 'npm run wdio'
             }
+        }
+    }
+    post {
+        success {
+            emailext subject: 'Build Successful',
+                body: 'Your build was successful. Good job!',
+                to: 'aakashkumar.sen@capco.com'
+        }
+        failure {
+            emailext subject: 'Build Failed',
+                body: 'Your build has failed. Please check the logs for details.',
+                to: 'aakashkumar.sen@capco.com'
         }
     }
 }
