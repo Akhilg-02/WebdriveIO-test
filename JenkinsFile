@@ -14,9 +14,7 @@ pipeline {
     }
     post {
         success {
-            steps {
-                echo 'Build Successful'
-            }
+            echo 'Build Successful'
             script {
                 cleanWs()
             }
@@ -25,9 +23,7 @@ pipeline {
                 to: 'aakashkumar.sen@capco.com'
         }
         failure {
-            steps {
-                echo 'Build Failed'
-            }
+            echo 'Build Failed'
             script {
        			cleanWs()
             }
