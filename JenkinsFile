@@ -6,7 +6,7 @@ pipeline {
                 bat 'npm install'
             }
         }
-        stage('Run WDIO Tests') {
+        stage('Run WebdriverIO Tests') {
             steps {
                 bat 'npm run wdio'
             }
@@ -14,11 +14,23 @@ pipeline {
     }
     post {
         success {
+            steps {
+                echo 'Build Successful'
+            }
+            script {
+                cleanWs()
+            }
             emailext subject: 'Build Successful',
                 body: 'Your build was successful. Good job!',
                 to: 'aakashkumar.sen@capco.com'
         }
         failure {
+            steps {
+                echo 'Build Failed'
+            }
+            script {
+       			cleanWs()
+            }
             emailext subject: 'Build Failed',
                 body: 'Your build has failed. Please check the logs for details.',
                 to: 'aakashkumar.sen@capco.com'
