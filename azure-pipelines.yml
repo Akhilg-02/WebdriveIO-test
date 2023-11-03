@@ -45,7 +45,7 @@ stages:
         )
       displayName: 'Start Chrome'
 
-- stage: InstallDependencies
+- stage: InstallDependencies and RunTests
   jobs:
   - job: InstallProjectDependencies
     pool:
@@ -56,12 +56,7 @@ stages:
 
     - script: npm install chromedriver  # Install ChromeDriver
       displayName: 'Install ChromeDriver'
-
-- stage: RunTests
-  jobs:
-  - job: RunWebDriverIOTests
-    pool:
-      vmImage: 'windows-latest'  # Use a Windows image
-    steps:
+      
     - script: npm run wdio  # Run your WebDriverIO tests
       displayName: 'Running WebDriverIO tests'
+
