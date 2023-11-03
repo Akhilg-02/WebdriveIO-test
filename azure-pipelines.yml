@@ -11,7 +11,7 @@ jobs:
   strategy:
     matrix:
       win-chrome:
-        SeleniumBrowser: chrome
+        SELENIUM_BROWSER: chrome
     maxParallel: 1
 
   steps:
@@ -21,7 +21,7 @@ jobs:
       version: 18.x  # Use Node.js version 18.x
 
   - powershell: |
-      if ($(SeleniumBrowser) -eq "chrome") {
+      if ($env:SELENIUM_BROWSER -eq "chrome") {
         # Download and install AutoIt (for handling browser dialogs)
         Invoke-WebRequest -Uri 'https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe' -OutFile 'AutoIt-Setup.exe'
         Start-Process -Wait -FilePath '.\AutoIt-Setup.exe' -ArgumentList '/S'
@@ -44,9 +44,9 @@ jobs:
   - script: npm run wdio  # Run your WebDriverIO tests
     displayName: 'Running WebDriverIO tests'
 
-  - powershell: |
-      if ($(SeleniumBrowser) -eq "chrome") {
-        # Close Chrome browser after tests
-        taskkill /IM chrome.exe /F
-      }
-    displayName: 'Close Chrome'
+  # - powershell: |
+  #     if ($env:SELENIUM_BROWSER -eq "chrome") {
+  #       # Close Chrome browser after tests
+  #       taskkill /IM chrome.exe /F
+  #     }
+  #   displayName: 'Close Chrome'
