@@ -17,6 +17,7 @@ pipeline {
             echo 'Build Successful'
             script {
                 cleanWs()
+				deleteDir()
             }
             emailext subject: 'Build Successful',
                 body: 'Your build was successful. Good job!',
@@ -26,6 +27,7 @@ pipeline {
             echo 'Build Failed'
             script {
        			cleanWs()
+				deleteDir()
             }
             emailext subject: 'Build Failed',
                 body: 'Your build has failed. Please check the logs for details.',
