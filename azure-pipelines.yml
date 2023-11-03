@@ -45,7 +45,7 @@ stages:
         )
       displayName: 'Start Chrome'
 
-- stage: InstallDependencies-RunTests
+- stage: RunTests
   jobs:
   - job: InstallProjectDependencies
     pool:
