@@ -30,7 +30,8 @@ jobs:
 
   - script: |
       if "%SeleniumBrowser%"=="chrome" (
-        start chrome
+        Start-Process "chrome.exe" -Wait
+        # start chrome
       )
     displayName: 'Start Chrome'
 
