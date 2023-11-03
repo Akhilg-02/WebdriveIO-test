@@ -44,9 +44,9 @@ jobs:
   - script: npm run wdio  # Run your WebDriverIO tests
     displayName: 'Running WebDriverIO tests'
 
-  - powershell: |
-      if ($env:SELENIUM_BROWSER -eq "chrome") {
-        # Close Chrome browser after tests
-        taskkill /IM chrome.exe /F
-      }
-    displayName: 'Close Chrome'
+  # - powershell: |
+  #     if ($env:SELENIUM_BROWSER -eq "chrome") {
+  #       # Close Chrome browser after tests
+  #       taskkill /IM chrome.exe /F
+  #     }
+  #   displayName: 'Close Chrome'
