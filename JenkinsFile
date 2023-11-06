@@ -15,10 +15,6 @@ pipeline {
     post {
         success {
             echo 'Build Successful'
-            script {
-                cleanWs()
-				deleteDir()
-            }
 			publishHTML(
                target: [
                  allowMissing: false,
@@ -29,16 +25,16 @@ pipeline {
                  reportName: 'My HTML Report' 
             ]
             )
+            /*script {
+                cleanWs()
+				deleteDir()
+            }
             emailext subject: 'Build Successful',
                 body: 'Your build was successful. Good job!',
-                to: 'aakashkumar.sen@capco.com'
+                to: 'aakashkumar.sen@capco.com'*/
         }
         failure {
             echo 'Build Failed'
-            script {
-       			cleanWs()
-				deleteDir()
-            }
 			publishHTML(
                target: [
                  allowMissing: false,
@@ -49,9 +45,13 @@ pipeline {
                  reportName: 'My HTML Report' 
             ]
             )
+           /* script {
+       			cleanWs()
+				deleteDir()
+            }
             emailext subject: 'Build Failed',
                 body: 'Your build has failed. Please check the logs for details.',
-                to: 'aakashkumar.sen@capco.com'
+                to: 'aakashkumar.sen@capco.com'*/
         }
     }
 }
