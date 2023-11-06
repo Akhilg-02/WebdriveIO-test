@@ -19,6 +19,16 @@ pipeline {
                 cleanWs()
 				deleteDir()
             }
+			publishHTML(
+               target: [
+                 allowMissing: false,
+                 alwaysLinkToLastBuild: true,
+                 keepAll: true,
+                 reportDir: 'reports',  
+                 reportFiles: 'index.html',  
+                 reportName: 'My HTML Report' 
+            ]
+            )
             emailext subject: 'Build Successful',
                 body: 'Your build was successful. Good job!',
                 to: 'aakashkumar.sen@capco.com'
@@ -29,6 +39,16 @@ pipeline {
        			cleanWs()
 				deleteDir()
             }
+			publishHTML(
+               target: [
+                 allowMissing: false,
+                 alwaysLinkToLastBuild: true,
+                 keepAll: true,
+                 reportDir: 'reports',  
+                 reportFiles: 'index.html',
+                 reportName: 'My HTML Report' 
+            ]
+            )
             emailext subject: 'Build Failed',
                 body: 'Your build has failed. Please check the logs for details.',
                 to: 'aakashkumar.sen@capco.com'
