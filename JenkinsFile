@@ -20,8 +20,8 @@ pipeline {
                  allowMissing: false,
                  alwaysLinkToLastBuild: true,
                  keepAll: true,
-                 reportDir: 'reports',  
-                 reportFiles: 'index.html',  
+                 reportDir: 'report',  
+                 reportFiles: 'cucumber-html-report/index.html',  
                  reportName: 'My HTML Report' 
             ]
             )
@@ -40,8 +40,8 @@ pipeline {
                  allowMissing: false,
                  alwaysLinkToLastBuild: true,
                  keepAll: true,
-                 reportDir: 'reports',  
-                 reportFiles: 'index.html',
+                 reportDir: 'report',  
+                 reportFiles: 'cucumber-html-report/index.html',  
                  reportName: 'My HTML Report' 
             ]
             )
