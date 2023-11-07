@@ -3,3 +3,8 @@
     displayName: newAzureScript
     steps:
       - template: new-job-definition.json
+jobs:
+  - job: newAzureScript
+    displayName: newAzureScript
+    steps:
+      - template: new-job-definition.json
