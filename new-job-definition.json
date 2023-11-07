@@ -1,0 +1,14 @@
+{
+  "name": "newAzureScript",
+  "jobs": [
+    {
+      "job": "jobScript",
+      "displayName": "Your New Job",
+      "steps": [
+        {
+          "powershell": "Write-Host 'Running your new job'"
+        }
+      ]
+    }
+  ]
+}
