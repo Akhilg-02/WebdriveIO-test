@@ -4,52 +4,59 @@ trigger:
 pr:
 - '*'
 
-jobs:
-- job: RunWebioTests
-  pool:
-    vmImage: 'windows-latest'  # Use a Windows image
-  strategy:
-    matrix:
-      win-chrome:
-        SELENIUM_BROWSER: chrome
-    maxParallel: 1
+stages:
+- stage: PrepareEnvironment
+  jobs:
+  - job: SetupEnvironment
+    pool:
+      vmImage: 'windows-latest'  # Use a Windows image
+    steps:
+    - task: UseNode@1
+      displayName: 'Install Node.js'
+      inputs:
+        version: 18.x  # Use Node.js version 18.x
 
-  steps:
-  - task: UseNode@1
-    displayName: 'Install Node.js'
-    inputs:
-      version: 18.x  # Use Node.js version 18.x
+    - powershell: |
+        if ($env:SELENIUM_BROWSER -eq "chrome") {
+          # Download and install AutoIt (for handling browser dialogs)
+          Invoke-WebRequest -Uri 'https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe' -OutFile 'AutoIt-Setup.exe'
+          Start-Process -Wait -FilePath '.\AutoIt-Setup.exe' -ArgumentList '/S'
+        }
+      displayName: 'Install AutoIt'
 
-  - powershell: |
-      if ($env:SELENIUM_BROWSER -eq "chrome") {
-        # Download and install AutoIt (for handling browser dialogs)
-        Invoke-WebRequest -Uri 'https://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-setup.exe' -OutFile 'AutoIt-Setup.exe'
-        Start-Process -Wait -FilePath '.\AutoIt-Setup.exe' -ArgumentList '/S'
-      }
-    displayName: 'Install AutoIt'
+    - powershell: |
+        if ($env:SELENIUM_BROWSER -eq "chrome") {
+          # Download and install Chrome
+          Invoke-WebRequest -Uri 'https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7BC22C06E7-C180-1429-23C2-9067643DAF53%7D%26lang%3Den%26browser%3D3%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dfalse%26ap%3Dx64-stable-statsdef_1%26installdataindex%3Ddefaultbrowser/update2/installers/ChromeSetup.exe' -OutFile 'ChromeSetup.exe'
+          Start-Process -Wait -FilePath '.\ChromeSetup.exe' -ArgumentList '/silent /install'
+        }
+      displayName: 'Install Chrome'
 
-  - powershell: |
-      if ($env:SELENIUM_BROWSER -eq "chrome") {
-        # Download and install Chrome
-        Invoke-WebRequest -Uri 'https://dl.google.com/tag/s/appguid%3D%7B8A69D345-D564-463C-AFF1-A69D9E530F96%7D%26iid%3D%7BC22C06E7-C180-1429-23C2-9067643DAF53%7D%26lang%3Den%26browser%3D3%26usagestats%3D0%26appname%3DGoogle%2520Chrome%26needsadmin%3Dfalse%26ap%3Dx64-stable-statsdef_1%26installdataindex%3Ddefaultbrowser/update2/installers/ChromeSetup.exe' -OutFile 'ChromeSetup.exe'
-        Start-Process -Wait -FilePath '.\ChromeSetup.exe' -ArgumentList '/silent /install'
-      }
-    displayName: 'Install Chrome'
+- stage: StartApplication
+  jobs:
+  - job: StartBrowser
+    pool:
+      vmImage: 'windows-latest'  # Use a Windows image
+    steps:
+    - script: |
+        if "%SeleniumBrowser%"=="chrome" (
+          Start-Process "chrome.exe" -Wait
+          # start chrome
+        )
+      displayName: 'Start Chrome'
 
-  - script: |
-      if "%SeleniumBrowser%"=="chrome" (
-        Start-Process "chrome.exe" -Wait
-        # start chrome
-      )
-    displayName: 'Start Chrome'
+- stage: RunTests
+  jobs:
+  - job: InstallProjectDependencies
+    pool:
+      vmImage: 'windows-latest'  # Use a Windows image
+    steps:
+    - script: npm install  # Install your project dependencies
+      displayName: 'Install Node Modules'
 
-  - script: npm install  # Install your project dependencies
-    displayName: 'Install Node Modules'
-
-  - script: npm install chromedriver  # Install ChromeDriver
-    displayName: 'Install ChromeDriver'
-
-  - script: npm run wdio  # Run your WebDriverIO tests
-    displayName: 'Running WebDriverIO tests'
-
+    - script: npm install chromedriver  # Install ChromeDriver
+      displayName: 'Install ChromeDriver'
+      
+    - script: npm run wdio  # Run your WebDriverIO tests
+      displayName: 'Running WebDriverIO tests'
 

@@ -15,23 +15,43 @@ pipeline {
     post {
         success {
             echo 'Build Successful'
-            script {
+			publishHTML(
+               target: [
+                 allowMissing: false,
+                 alwaysLinkToLastBuild: true,
+                 keepAll: true,
+                 reportDir: 'report',  
+                 reportFiles: 'index.html',  
+                 reportName: 'My HTML Report' 
+            ]
+            )
+            /*script {
                 cleanWs()
 				deleteDir()
             }
             emailext subject: 'Build Successful',
                 body: 'Your build was successful. Good job!',
-                to: 'aakashkumar.sen@capco.com'
+                to: 'aakashkumar.sen@capco.com'*/
         }
         failure {
             echo 'Build Failed'
-            script {
+			publishHTML(
+               target: [
+                 allowMissing: false,
+                 alwaysLinkToLastBuild: true,
+                 keepAll: true,
+                 reportDir: 'report',  
+                 reportFiles: 'index.html',  
+                 reportName: 'My HTML Report' 
+            ]
+            )
+           /* script {
        			cleanWs()
 				deleteDir()
             }
             emailext subject: 'Build Failed',
                 body: 'Your build has failed. Please check the logs for details.',
-                to: 'aakashkumar.sen@capco.com'
+                to: 'aakashkumar.sen@capco.com'*/
         }
     }
 }

@@ -1,5 +1,8 @@
 import type { Options } from '@wdio/types'
 import { join } from 'path'
+import pkg from 'multiple-cucumber-html-reporter';
+const { generate } = pkg;
+
 const headless: boolean = process.env.HEADLESS as unknown as boolean;
 // const browserOptions = {
 //     args: headless
@@ -177,7 +180,18 @@ export const config: Options.Testrunner = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: [['allure', {outputDir: 'allure-results'}]],
+    reporters: [
+        'dot',
+        'spec',
+        [
+            'cucumberjs-json',
+            {
+                jsonFolder: `${process.cwd()}/report`,
+                language: 'en',
+                reportFilePerRetry: 'true'
+            }
+        ]
+    ],
 
     //
     // If you are using Cucumber you need to specify the location of your step definitions.
@@ -370,4 +384,26 @@ export const config: Options.Testrunner = {
     */
     // onReload: function(oldSessionId, newSessionId) {
     // }
+    onComplete: async (): Promise<void> => {
+        // Generate the report when it all tests are done
+        let date = new Date();
+        generate({
+            jsonDir: `${process.cwd()}/report`,
+            reportPath: `${process.cwd()}/report/cucumber-html-report`,
+            openReportInBrowser: true,
+            disableLog: true,
+            saveCollectedJSON: true,
+            reportName: 'Capco-WebFasTest Test Report',
+            customData: {
+                title: 'Sample Test Report',
+                data: [
+                    { label: 'Project', value: 'Demo Project' },
+                    { label: 'Environment', value: 'QA' },
+                    { label: 'BaseURL', value: 'https://www.amazon.in/' },
+                    { label: 'Platform', value: process.platform },
+                    { label: 'Date', value: date.toLocaleDateString() }
+                ]
+            }
+        });
+    }
 }
