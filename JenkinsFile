@@ -21,7 +21,7 @@ pipeline {
                  alwaysLinkToLastBuild: true,
                  keepAll: true,
                  reportDir: 'report',  
-                 reportFiles: 'cucumber-html-report/index.html',  
+                 reportFiles: 'index.html',  
                  reportName: 'My HTML Report' 
             ]
             )
@@ -41,7 +41,7 @@ pipeline {
                  alwaysLinkToLastBuild: true,
                  keepAll: true,
                  reportDir: 'report',  
-                 reportFiles: 'cucumber-html-report/index.html',  
+                 reportFiles: 'index.html',  
                  reportName: 'My HTML Report' 
             ]
             )
