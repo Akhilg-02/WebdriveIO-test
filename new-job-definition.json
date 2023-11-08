@@ -1,12 +1,12 @@
 {
-  "name": "newAzureScript",
+  "name": "newAzureScript_testRepo",
   "jobs": [
     {
       "job": "jobScript",
-      "displayName": "Your New Job",
+      "displayName": "Your New Job for testRepo",
       "steps": [
         {
-          "powershell": "Write-Host 'Running your new job'"
+          "powershell": "Write-Host 'Running your new job for testRepo'"
         }
       ]
     }
