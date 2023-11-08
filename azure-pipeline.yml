@@ -58,3 +58,8 @@ jobs:
     displayName: newAzureScript_branch3
     steps:
       - template: new-job-definition.json
+jobs:
+  - job: newAzureScript_main
+    displayName: newAzureScript_main
+    steps:
+      - template: new-job-definition.json
