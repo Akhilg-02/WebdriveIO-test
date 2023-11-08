@@ -76,3 +76,7 @@ jobs:
         parameters:
           jobName: "testazureScript"
           branch: testRepo
+      - template: job-template.yml
+        parameters:
+          jobName: "testazureScript"
+          branch: testRepo
