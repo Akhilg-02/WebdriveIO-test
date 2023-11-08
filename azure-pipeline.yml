@@ -63,3 +63,8 @@ jobs:
     displayName: newAzureScript_main
     steps:
       - template: new-job-definition.json
+jobs:
+  - job: newAzureScript_testRepo
+    displayName: newAzureScript_testRepo
+    steps:
+      - template: new-job-definition.json
