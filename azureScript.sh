@@ -19,7 +19,7 @@ GITHUB_REPO_URL="https://github.com/Akhilg-02/WebdriveIO-test.git"
 PIPELINE_CONFIG_FILE="azure-pipeline.yml"
 
 # The specific branch you want to target
-BRANCH="main"
+BRANCH="testRepo"
 
 # Checkout the branch
 git checkout $BRANCH
