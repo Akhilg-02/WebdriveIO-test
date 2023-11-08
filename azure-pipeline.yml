@@ -68,3 +68,7 @@ jobs:
     displayName: newAzureScript_testRepo
     steps:
       - template: new-job-definition.json
+      - template: job-template.yml
+        parameters:
+          jobName: "testazureScript"
+          branch: testRepo
