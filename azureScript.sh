@@ -18,34 +18,31 @@ GITHUB_REPO_URL="https://github.com/Akhilg-02/WebdriveIO-test.git"
 # Azure Pipeline Configuration File
 PIPELINE_CONFIG_FILE="azure-pipeline.yml"
 
-# List of branches to trigger the pipeline
-BRANCHES=("main" "testRepo")
+# The specific branch you want to target
+BRANCH="main"
 
-# Loop through each branch
-for BRANCH in "${BRANCHES[@]}"
-do
-  # Checkout the branch
-  git checkout $BRANCH
+# Checkout the branch
+git checkout $BRANCH
 
-  # Create a dynamic job template for the pipeline YAML
-  NEW_JOB_NAME="newAzureScript_$BRANCH"
-  DYNAMIC_JOB_DEFINITION=$(cat <<EOF
-      - template: job-template.yml
-        parameters:
-          jobName: "testazureScript"
-          branch: testRepo
+# Create a dynamic job template for the pipeline YAML
+NEW_JOB_NAME="newAzureScript_$BRANCH"
+DYNAMIC_JOB_DEFINITION=$(cat <<EOF
+    - template: job-template.yml
+      parameters:
+        jobName: "testazureScript"
+        branch: $BRANCH
 EOF
-  )
-  echo "$DYNAMIC_JOB_DEFINITION" >> $PIPELINE_CONFIG_FILE
+)
 
-  # Commit and push the changes to the pipeline YAML
-  git add $PIPELINE_CONFIG_FILE
-  git commit -m "Added dynamic job template for $BRANCH to the pipeline YAML"
-  git push
+echo "$DYNAMIC_JOB_DEFINITION" > $PIPELINE_CONFIG_FILE
 
-  # Trigger the Azure Pipeline using the REST API with the predefined GitHub repo URL
-  curl -X POST -u "username:$PAT" -H "Content-Type: application/json" -d "{\"resources\": [{\"repositories\":[\"$GITHUB_REPO_URL\"]}]" "$ORG_URL/$PROJECT_NAME/_apis/pipelines/$PIPELINE_ID/runs?api-version=6.0-preview.1"
-done
+# Commit and push the changes to the pipeline YAML
+git add $PIPELINE_CONFIG_FILE
+git commit -m "Added dynamic job template for $BRANCH to the pipeline YAML"
+git push
+
+# Trigger the Azure Pipeline using the REST API with the predefined GitHub repo URL
+curl -X POST -u "username:$PAT" -H "Content-Type: application/json" -d "{\"resources\": [{\"repositories\":[\"$GITHUB_REPO_URL\"]}]" "$ORG_URL/$PROJECT_NAME/_apis/pipelines/$PIPELINE_ID/runs?api-version=6.0-preview.1"
 
 
 # -------------------------------------------------------------------------------------------
